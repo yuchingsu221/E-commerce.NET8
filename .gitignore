@@ -13,7 +13,7 @@
 *.DS_Store
 .DS_Store
 
-Data/
+//Data/
 obj/
 bin/
 packages/
