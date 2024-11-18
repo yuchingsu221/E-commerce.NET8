@@ -18,6 +18,11 @@ obj/
 bin/
 packages/
 Publish/
+wwwroot/lib/
+wwwroot/lib/jquery-validation-unobtrusive
+node_modules/
+dist/
+build/
 
 \
 
