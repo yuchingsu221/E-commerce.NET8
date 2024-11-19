@@ -25,14 +25,14 @@ namespace YuChingECommerce.Utility {
             /* SendGridClient mail 無法使用
             var client = new SendGridClient(SendGridSecret);
 
-            var from = new EmailAddress("yuchingsu221@gmail.com", "Bulky Book");
+            var from = new EmailAddress("yuchingsu221@gmail.com", "yuchingsu Book");
             var to = new EmailAddress(email);
             var message = MailHelper.CreateSingleEmail(from, to, subject, "", htmlMessage);
 
             return client.SendEmailAsync(message);
             */
-          
-                var smtpClient = new SmtpClient("smtp.gmail.com")
+
+            var smtpClient = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
                     Credentials = new NetworkCredential("yuchingsu221@gmail.com", "kyef kuvo ysyt tkkd"),
@@ -41,7 +41,7 @@ namespace YuChingECommerce.Utility {
             
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress("yuchingsu221@gmail.com", "Bulky Book"),
+                    From = new MailAddress("yuchingsu221@gmail.com", "yuchingsu Book"),
                     Subject = subject,
                     Body = htmlMessage,
                     IsBodyHtml = true,

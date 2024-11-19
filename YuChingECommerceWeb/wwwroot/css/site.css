@@ -1,6 +1,19 @@
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+/* 覆蓋 Bootstrap 預設的 navbar-dark 顏色設定 */
+.navbar-dark .navbar-nav .nav-link {
+    color: #000 !important; /* 設定連結文字顏色為黑色 */
+}
+
+
+
+.navbar-dark .navbar-brand {
+    color: #000 !important; /* 設定品牌名稱顏色為黑色 */
+}
+
+
+
 .divider-text:before,
 .divider-text:after {
     color: white;
@@ -66,7 +79,7 @@ html {
     color: white;
 }
 
-.text-warning {
+.text-card {
     color: #BD7418 !important;
 }
 
@@ -83,46 +96,66 @@ html {
 }
 
 .bg-primary {
-    background-color: #192E2F !important;
+    background-color: #F4E1B2 !important;
 }
 
 .bg-secondary {
-    background-color: #3A595C !important;
+    background-color: #f4f4f4 !important;
+}
+
+.bg-third {
+    background-color: rgba(189, 116, 24, 0.6) !important;
 }
 
 bg-success {
     background-color: #4b7147 !important;
 }
 
-
+.count {
+    background-color: rgba(189, 116, 24, 0.6) !important;
+}
 
 .card {
-    border-color: #425F4B !important;
+    border-color: rgba(189, 116, 24, 0.6) !important; /* Tiffany金色邊框 */
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 微弱陰影，提升卡片層次感 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+
+
+.card-title {
+    color: #000000 !important; /* 設定文字顏色為黑色 */
+}
 
 /* btn-outline-primary */
 
 
 
 .btn-outline-primary {
-    color: #192E2F;
-    border-color: #192E2F;
+    color: #D4AF37;
+    border-color: #D4AF37;
 }
 
 
 
     .btn-outline-primary:hover {
-        color: #fff;
-        background-color: #192E2F;
-        border-color: #192E2F;
+        color: white;
+        background-color: #D4AF37;
+        border-color: #D4AF37;
     }
 
 
 
     .btn-check:focus + .btn-outline-primary, .btn-outline-primary:focus {
-        box-shadow: 0 0 0 0.25rem rgba(25, 46, 47, 0.5);
+        box-shadow: 0 0 0 0.25rem rgba(189, 116, 24, 0.6);
     }
 
 
@@ -130,21 +163,21 @@ bg-success {
     .btn-check:checked + .btn-outline-primary,
     .btn-check:active + .btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show {
         color: #fff;
-        background-color: #192E2F;
-        border-color: #192E2F;
+        background-color: #C07b24;
+        border-color: #C07b24;
     }
 
 
 
         .btn-check:checked + .btn-outline-primary:focus,
         .btn-check:active + .btn-outline-primary:focus, .btn-outline-primary:active:focus, .btn-outline-primary.active:focus, .btn-outline-primary.dropdown-toggle.show:focus {
-            box-shadow: 0 0 0 0.25rem rgba(25, 46, 47, 0.5);
+            box-shadow: 0 0 0 0.25rem rgba(189, 116, 24, 0.6);
         }
 
 
 
     .btn-outline-primary:disabled, .btn-outline-primary.disabled {
-        color: #192E2F;
+        color: #C07b24;
         background-color: transparent;
     }
 
@@ -165,7 +198,7 @@ bg-success {
 
 
     .btn-check:focus + .btn-outline-warning, .btn-outline-warning:focus {
-        box-shadow: 0 0 0 0.25rem rgba(25, 46, 47, 0.5);
+        box-shadow: 0 0 0 0.25rem rgba(189, 116, 24, 0.6);
     }
 
 
@@ -181,7 +214,7 @@ bg-success {
 
         .btn-check:checked + .btn-outline-warning:focus,
         .btn-check:active + .btn-outline-warning:focus, .btn-outline-warning:active:focus, .btn-outline-warning.active:focus, .btn-outline-warning.dropdown-toggle.show:focus {
-            box-shadow: 0 0 0 0.25rem rgba(25, 46, 47, 0.5);
+            box-shadow: 0 0 0 0.25rem rgba(189, 116, 24, 0.6);
         }
 
 
@@ -194,22 +227,22 @@ bg-success {
 
 
 .btn-outline-secondary {
-    color: #134b5f;
-    border-color: #134b5f;
+    color: #D4AF37;
+    border-color: #D4AF37;
 }
 
 
 
     .btn-outline-secondary:hover {
         color: #fff;
-        background-color: #134b5f;
-        border-color: #134b5f;
+        background-color: #D4AF37;
+        border-color: #D4AF37;
     }
 
 
 
     .btn-check:focus + .btn-outline-secondary, .btn-outline-secondary:focus {
-        box-shadow: 0 0 0 0.25rem rgba(25, 46, 47, 0.5);
+        box-shadow: 0 0 0 0.25rem #D4AF37;
     }
 
 
@@ -217,21 +250,21 @@ bg-success {
     .btn-check:checked + .btn-outline-secondary,
     .btn-check:active + .btn-outline-secondary, .btn-outline-secondary:active, .btn-outline-secondary.active, .btn-outline-secondary.dropdown-toggle.show {
         color: #fff;
-        background-color: #134b5f;
-        border-color: #134b5f;
+        background-color: #D4AF37;
+        border-color: #D4AF37;
     }
 
 
 
         .btn-check:checked + .btn-outline-secondary:focus,
         .btn-check:active + .btn-outline-secondary:focus, .btn-outline-secondary:active:focus, .btn-outline-secondary.active:focus, .btn-outline-secondary.dropdown-toggle.show:focus {
-            box-shadow: 0 0 0 0.25rem rgba(25, 46, 47, 0.5);
+            box-shadow: 0 0 0 0.25rem rgba(189, 116, 24, 0.6);
         }
 
 
 
     .btn-outline-secondary:disabled, .btn-outline-secondary.disabled {
-        color: #134b5f;
+        color: #D4AF37;
         background-color: transparent;
     }
 
@@ -243,25 +276,23 @@ bg-success {
 
 
 .btn-primary {
-    color: #fff;
-    background-color: #192E2F;
-    border-color: #192E2F;
+    background-color: rgba(189, 116, 24, 0.6); /* 金色背景 */
+    border: 2px solid #B89C4A; /* 內斂的金色邊框 */
 }
 
 
 
     .btn-primary:hover {
-        color: #fff;
-        background-color: #445f5e;
-        border-color: #445f5e;
+        background-color: rgba(189, 116, 24, 0.8); /* 按鈕懸停時顏色變深 */
+        border-color: #D4AF37; /* 邊框顏色反轉 */
     }
 
 
 
     .btn-check:focus + .btn-primary, .btn-primary:focus {
         color: #fff;
-        background-color: #445f5e;
-        border-color: #445f5e;
+        background-color: rgba(189, 116, 24, 0.6);
+        border-color: rgba(189, 116, 24, 0.6);
         box-shadow: 0 0 0 0.25rem rgba(60, 60, 60, 0.5);
     }
 
@@ -271,8 +302,8 @@ bg-success {
     .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active,
     .show > .btn-primary.dropdown-toggle {
         color: #fff;
-        background-color: #445f5e;
-        border-color: #445f5e;
+        background-color: rgba(189, 116, 24, 0.6);
+        border-color: rgba(189, 116, 24, 0.6);
     }
 
 
@@ -349,8 +380,8 @@ bg-success {
 
 .btn-secondary {
     color: #fff;
-    background-color: #134b5f;
-    border-color: #134b5f;
+    background-color: #BD7418;
+    border-color: #BD7418;
 }
 
 
@@ -392,8 +423,8 @@ bg-success {
 
     .btn-secondary:disabled, .btn-secondary.disabled {
         color: #fff;
-        background-color: #1a6985;
-        border-color: #1a6985;
+        background-color: #BD7418;
+        border-color: #BD7418;
     }
 
 
@@ -468,7 +499,7 @@ bg-success {
 
 
     .btn-check:focus + .btn-outline-success, .btn-outline-success:focus {
-        box-shadow: 0 0 0 0.25rem rgba(25, 46, 47, 0.5);
+        box-shadow: 0 0 0 0.25rem rgba(189, 116, 24, 0.6);
     }
 
 
@@ -484,7 +515,7 @@ bg-success {
 
         .btn-check:checked + .btn-outline-success:focus,
         .btn-check:active + .btn-outline-success:focus, .btn-outline-success:active:focus, .btn-outline-success.active:focus, .btn-outline-success.dropdown-toggle.show:focus {
-            box-shadow: 0 0 0 0.25rem rgba(25, 46, 47, 0.5);
+            box-shadow: 0 0 0 0.25rem rgba(189, 116, 24, 0.6);
         }
 
 
@@ -553,12 +584,18 @@ bg-success {
 
 
 .product-image {
-    transition: transform 0.5s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    object-fit: cover; /* 確保圖片充滿圖片框，但保持比例 */
+    max-width: 100%; /* 最大寬度 100%，確保圖片不會超過容器寬度 */
+    height: 300px; /* 最大高度 600px，限制圖片高度 */
+    width: 100%; /* 設定寬度為 100%，讓圖片保持響應式 */
+    display: block; /* 去除圖片的空白間距 */
+    margin-left: auto; /* 使圖片水平居中 */
+    margin-right: auto; /* 使圖片水平居中 */
 }
 
-
-
     .product-image:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
+        opacity: 0.8;
     }
 

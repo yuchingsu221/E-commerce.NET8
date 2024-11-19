@@ -1,6 +1,26 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+body {
+    background-color: #1A1A1A; /* 深灰色背景 */
+    color: #F5F5F5; /* 淺色文字 */
+}
+
+.navbar {
+    background-color: #333; /* 深色背景 */
+}
+
+.btn-outline-primary {
+    color: #FFD700;
+    border-color: #FFD700;
+}
+
+    .btn-outline-primary:hover {
+        color: #FFF;
+        background-color: #FFD700;
+        border-color: #FFD700;
+    }
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;
