@@ -549,3 +549,16 @@ bg-success {
         background-color: #578553;
         border-color: #578553;
     }
+
+
+
+.product-image {
+    transition: transform 0.5s ease;
+}
+
+
+
+    .product-image:hover {
+        transform: scale(1.1);
+    }
+
