@@ -104,5 +104,94 @@
          <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- 運勢廣告浮動視窗 -->
+    <div id="fortuneModal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">每日運勢推薦商品</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="fortuneForm">
+                        <div class="mb-3">
+                            <label for="zodiacSign" class="form-label">請選擇您的星座</label>
+                            <select id="zodiacSign" class="form-select" required>
+                                <option value="">請選擇</option>
+                                <option value="Aries">牡羊座</option>
+                                <option value="Taurus">金牛座</option>
+                                <option value="Gemini">雙子座</option>
+                                <option value="Cancer">巨蟹座</option>
+                                <option value="Leo">獅子座</option>
+                                <option value="Virgo">處女座</option>
+                                <option value="Libra">天秤座</option>
+                                <option value="Scorpio">天蠍座</option>
+                                <option value="Sagittarius">射手座</option>
+                                <option value="Capricorn">摩羯座</option>
+                                <option value="Aquarius">水瓶座</option>
+                                <option value="Pisces">雙魚座</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="birthDate" class="form-label">請輸入您的生日</label>
+                            <input type="date" id="birthDate" class="form-control" required>
+                        </div>
+                        <button type="button" id="submitFortune" class="btn btn-primary w-100">查看運勢</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 自動顯示廣告視窗
+        document.addEventListener("DOMContentLoaded", function () {
+            if (!localStorage.getItem("fortuneModalClosed")) {
+                var modal = new bootstrap.Modal(document.getElementById("fortuneModal"));
+                modal.show();
+            }
+        });
+
+        // 關閉視窗時設定 LocalStorage
+        document.querySelector(".btn-close").addEventListener("click", function () {
+            localStorage.setItem("fortuneModalClosed", true);
+        });
+
+        // 提交運勢資料
+        document.getElementById("submitFortune").addEventListener("click", function () {
+            const zodiacSign = document.getElementById("zodiacSign").value;
+            const birthDate = document.getElementById("birthDate").value;
+
+            if (!zodiacSign || !birthDate) {
+                alert("請完整填寫資料！");
+                return;
+            }
+
+            // 根據星座推薦商品的 productId
+            const productLinks = {
+                Aries: 1,
+                Taurus: 2,
+                Gemini: 3,
+                Cancer: 4,
+                Leo: 5,
+                Virgo: 6,
+                Libra: 7,
+                Scorpio: 8,
+                Sagittarius: 9,
+                Capricorn: 10,
+                Aquarius: 11,
+                Pisces: 12
+            };
+
+            const productId = productLinks[zodiacSign];
+            const productUrl = `/Customer/Home/Details?productId=${productId}`;
+
+            // 跳轉到商品詳情頁面
+            window.location.href = productUrl;
+        });
+    </script>
+
+
 </body>
 </html>
