@@ -33,7 +33,7 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Order</a>
                         </li>
@@ -57,21 +57,26 @@
                                     <li class="nav-item">
                                         <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create User</a>
                                     </li>
-                                     <li class="nav-item">
+                                    <li class="nav-item">
                                         <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">Manage User</a>
                                     </li>
 
                                 </ul>
                             </li>
                         }
-                       
-                       
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                    @await Component.InvokeAsync("ShoppingCart")
-                                </a>
-                            </li>
-                        
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                @await Component.InvokeAsync("ShoppingCart")
+                            </a>
+                        </li>
+
+                        <!-- New Test Fortune Modal button -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="testFortuneModal">Test Fortune Modal</a>
+                        </li>
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -100,9 +105,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" asp-append-version="true"></script>
 
-    <script src="https://cdn.tiny.cloud/1/g28lhnxtlihu4l4a381gw7tz47voznshwbi10lmsvlekrfme/tinymce/6/tinymce.min.js" referrerpolicy="origin">
-         <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script></script>
+    <script src="https://cdn.tiny.cloud/1/g28lhnxtlihu4l4a381gw7tz47voznshwbi10lmsvlekrfme/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 
     <!-- 運勢廣告浮動視窗 -->
@@ -115,7 +121,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeFortuneModal()"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="fortuneForm">
+                    <div id="fortuneForm">
                         <div class="mb-3">
                             <label for="zodiacSign" class="form-label">請選擇您的星座</label>
                             <select id="zodiacSign" class="form-select" required>
@@ -139,7 +145,7 @@
                             <input type="date" id="birthDate" class="form-control" required>
                         </div>
                         <button type="button" id="submitFortune" class="btn btn-primary w-100">查看運勢</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -169,89 +175,130 @@
     </div>
 
     <script>
-        // 自動顯示第一次浮動視窗
-        document.addEventListener("DOMContentLoaded", function () {
-            if (!localStorage.getItem("fortuneModalClosed")) {
-                var modal = new bootstrap.Modal(document.getElementById("fortuneModal"));
-                modal.show();
-            }
-        });
-
-        // 關閉第一次視窗時設定 LocalStorage
-        function closeFortuneModal() {
-            localStorage.setItem("fortuneModalClosed", true);
-            var modal = bootstrap.Modal.getInstance(document.getElementById("fortuneModal"));
-            modal.hide();
-        }
-
-        // 關閉第二次視窗
-        function closeResultModal() {
-            var modal = bootstrap.Modal.getInstance(document.getElementById("resultModal"));
-            modal.hide();
-        }
-
-        // 提交運勢資料
-        document.getElementById("submitFortune").addEventListener("click", function () {
-            const zodiacSign = document.getElementById("zodiacSign").value;
-            const birthDate = document.getElementById("birthDate").value;
-
-            if (!zodiacSign || !birthDate) {
-                Swal.fire({
-                    icon: "error",
-                    title: "資料不完整",
-                    text: "請完整填寫星座與生日資料！",
-                });
-                return;
-            }
-
-            // 發送 AJAX 請求到後端
-            $.ajax({
-                url: '/Customer/Home/GetFortune',
-                type: 'POST',
-                data: { zodiacSign: zodiacSign, birthDate: birthDate },
-                success: function (response) {
-                    // 關閉第一個視窗
-                    closeFortuneModal();
-
-                    // 顯示結果到第二個視窗
-                    document.getElementById("luckyColorYear").innerText = response.LuckyColorYear;
-                    document.getElementById("luckyColorMonth").innerText = response.LuckyColorMonth;
-                    document.getElementById("horoscope").innerText = response.Horoscope;
-
-                    // 清空推薦商品區域
-                    var productContainer = document.getElementById("recommendedProducts");
-                    productContainer.innerHTML = "";
-
-                    // 動態生成商品卡片
-                    response.Products.forEach(function (product) {
-                        var productCard = `
-                                <div class="col-md-4 mb-3">
-                                    <div class="card">
-                                        <img src="${product.ImageUrl}" class="card-img-top" alt="${product.Title}">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${product.Title}</h5>
-                                            <a href="/Customer/Home/Details?productId=${product.Id}" class="btn btn-primary">查看商品</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                        productContainer.insertAdjacentHTML('beforeend', productCard);
-                    });
-
-                    // 顯示第二個視窗
-                    var resultModal = new bootstrap.Modal(document.getElementById("resultModal"));
-                    resultModal.show();
-                },
-                error: function () {
-                    Swal.fire({
-                        icon: "error",
-                        title: "發生錯誤",
-                        text: "無法取得運勢資訊，請稍後再試。",
-                    });
+        // Self-invoking function to avoid global scope pollution
+        (function () {
+            // 自動顯示第一次浮動視窗
+            document.addEventListener("DOMContentLoaded", function () {
+                if (!localStorage.getItem("fortuneModalClosed")) {
+                    var modal = new bootstrap.Modal(document.getElementById("fortuneModal"));
+                    modal.show();
                 }
             });
-        });
+
+            // 關閉第一次視窗時設定 LocalStorage
+            function closeFortuneModal() {
+                localStorage.setItem("fortuneModalClosed", true);
+                var modal = bootstrap.Modal.getInstance(document.getElementById("fortuneModal"));
+                modal.hide();
+            }
+
+            // 關閉第二次視窗
+            function closeResultModal() {
+                var modal = bootstrap.Modal.getInstance(document.getElementById("resultModal"));
+                modal.hide();
+            }
+
+            // Expose functions to the global scope
+            window.closeFortuneModal = closeFortuneModal;
+            window.closeResultModal = closeResultModal;
+
+            // 提交運勢資料
+            document.getElementById("submitFortune").addEventListener("click", function (e) {
+                e.preventDefault();
+                console.log("submitFortune clicked");
+
+                const zodiacSign = document.getElementById("zodiacSign").value;
+                const birthDate = document.getElementById("birthDate").value;
+
+                if (!zodiacSign || !birthDate) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "資料不完整",
+                        text: "請完整填寫星座與生日資料！",
+                    });
+                    return;
+                }
+
+                var ajaxUrl = '@Url.Action("GetFortune", "Home", new { area = "Customer" })';
+                console.log("AJAX URL:", ajaxUrl);
+
+                // 發送 AJAX 請求到後端
+                $.ajax({
+                    url: ajaxUrl,
+                    type: 'POST',
+                    data: { zodiacSign: zodiacSign, birthDate: birthDate },
+                    dataType: 'json', // Expect JSON response
+                    success: function (response) {
+                        console.log("AJAX Success:", response);
+
+                        if (response.error) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: response.error,
+                            });
+                            return;
+                        }
+
+                        // Close the first modal
+                        var modal = bootstrap.Modal.getInstance(document.getElementById("fortuneModal"));
+                        modal.hide();
+
+                        // Populate the result modal with response data
+                        document.getElementById("luckyColorYear").innerText = response.LuckyColorYear;
+                        document.getElementById("luckyColorMonth").innerText = response.LuckyColorMonth;
+                        document.getElementById("horoscope").innerText = response.Horoscope;
+
+                        // Generate product cards dynamically
+                        const productContainer = document.getElementById("recommendedProducts");
+                        productContainer.innerHTML = "";
+
+                        response.Products.forEach(product => {
+                            const productCard = `
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card">
+                                            <img src="${product.ImageUrl}" class="card-img-top" alt="${product.Title}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${product.Title}</h5>
+                                                <a href="/Customer/Home/Details?productId=${product.Id}" class="btn btn-primary">查看商品</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            productContainer.insertAdjacentHTML('beforeend', productCard);
+                        });
+
+                        // Show the result modal
+                        var resultModal = new bootstrap.Modal(document.getElementById("resultModal"));
+                        resultModal.show();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX Error:", error);
+                        console.log("Response Text:", xhr.responseText);
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Unable to retrieve fortune. Please try again later.",
+                        });
+                    }
+                });
+            });
+
+            // Event listener for the Test Fortune Modal button
+            document.getElementById("testFortuneModal").addEventListener("click", function (e) {
+                e.preventDefault(); // Prevent default action
+
+                // Optionally clear the localStorage item to prevent conflicts
+                localStorage.removeItem("fortuneModalClosed");
+
+                // Initialize and show the fortuneModal
+                var modal = new bootstrap.Modal(document.getElementById("fortuneModal"));
+                modal.show();
+            });
+        })();
     </script>
+
 
 </body>
 </html>

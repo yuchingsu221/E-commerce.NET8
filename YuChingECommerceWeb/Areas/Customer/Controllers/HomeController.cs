@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
+using Newtonsoft.Json;
 
 namespace YuChingECommerceWeb.Areas.Customer.Controllers
 {
@@ -71,36 +72,53 @@ namespace YuChingECommerceWeb.Areas.Customer.Controllers
         }
 
         [HttpPost]
+        [IgnoreAntiforgeryToken]
+        [AllowAnonymous]
         public IActionResult GetFortune(string zodiacSign, string birthDate)
         {
-            if (DateTime.TryParse(birthDate, out DateTime parsedDate))
+            try
             {
-                string luckyColorYear = ZodiacHelper.GetLuckyColor(zodiacSign, DateTime.Now);
-                string luckyColorMonth = ZodiacHelper.GetLuckyColor(zodiacSign, DateTime.Now); // 可根據月份進一步細分
-                string horoscope = ZodiacHelper.GetDailyHoroscope(zodiacSign);
-
-                // 獲取對應幸運色的商品
-                var products = _unitOfWork.Product.GetAll(p => p.Color == luckyColorYear || p.Color == luckyColorMonth).ToList();
-
-                // 構建返回的資料
-                var result = new
+                if (DateTime.TryParse(birthDate, out DateTime parsedDate))
                 {
-                    LuckyColorYear = luckyColorYear,
-                    LuckyColorMonth = luckyColorMonth,
-                    Horoscope = horoscope,
-                    Products = products.Select(p => new
+                    string luckyColorYear = ZodiacHelper.GetLuckyColor(zodiacSign, DateTime.Now);
+                    string luckyColorMonth = ZodiacHelper.GetLuckyColor(zodiacSign, DateTime.Now); // You can further refine this
+                    string horoscope = ZodiacHelper.GetDailyHoroscope(zodiacSign);
+
+                    // Retrieve products matching the lucky colors
+                    var products = _unitOfWork.Product.GetAll(p => p.Color == luckyColorYear || p.Color == luckyColorMonth).ToList();
+
+                    // Build the response data
+                    var result = new
                     {
-                        p.Id,
-                        p.Title,
-                        ImageUrl = p.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/images/default_product.png"
-                    })
-                };
+                        LuckyColorYear = luckyColorYear,
+                        LuckyColorMonth = luckyColorMonth,
+                        Horoscope = horoscope,
+                        Products = products.Select(p => new
+                        {
+                            p.Id,
+                            p.Title,
+                            ImageUrl = p.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/images/default_product.png"
+                        }).ToList()
+                    };
 
-                return Json(result);
+                    return Json(result);
+                }
+                else
+                {
+                    Response.StatusCode = 400;
+                    return Json(new { error = "Invalid date format." });
+                }
             }
+            catch (Exception ex)
+            {
+                // Log exception
+                Console.WriteLine("Exception in GetFortune: " + ex.Message);
 
-            return BadRequest("Invalid date format.");
+                Response.StatusCode = 500;
+                return Json(new { error = "An error occurred on the server." });
+            }
         }
+
 
         public IActionResult LuckyBracelets(string birthDate)
         {
