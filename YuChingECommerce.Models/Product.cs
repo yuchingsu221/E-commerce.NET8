@@ -18,7 +18,7 @@ namespace YuChingECommerce.Models
         public string Title { get; set; }
         public string Description { get; set; }
         [Required]
-        public string ISBN { get; set; }
+        public string SKU { get; set; }
         [Required]
         public string Author { get; set; }
         [Required]
@@ -49,5 +49,6 @@ namespace YuChingECommerce.Models
 
         [ValidateNever]
         public List<ProductImage> ProductImages { get; set; }
+        public string Color { get; set; }
     }
 }

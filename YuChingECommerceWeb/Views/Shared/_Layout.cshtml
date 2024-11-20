@@ -106,12 +106,13 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <!-- 運勢廣告浮動視窗 -->
-    <div id="fortuneModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <!-- 第一次浮動視窗：輸入星座和生日 -->
+    <div id="fortuneModal" class="modal fade" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">每日運勢推薦商品</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">輸入您的星座和生日</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeFortuneModal()"></button>
                 </div>
                 <div class="modal-body">
                     <form id="fortuneForm">
@@ -144,8 +145,31 @@
         </div>
     </div>
 
+    <!-- 第二次浮動視窗：顯示運勢和推薦商品 -->
+    <div id="resultModal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <!-- 調整為較大的視窗 -->
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">您的運勢與推薦商品</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeResultModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>今年的幸運色：<span id="luckyColorYear"></span></h5>
+                    <h5>這個月的幸運色：<span id="luckyColorMonth"></span></h5>
+                    <p>今日運勢：<span id="horoscope"></span></p>
+                    <hr>
+                    <h5>為您推薦的商品：</h5>
+                    <div class="row" id="recommendedProducts">
+                        <!-- 動態生成推薦商品 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 自動顯示廣告視窗
+        // 自動顯示第一次浮動視窗
         document.addEventListener("DOMContentLoaded", function () {
             if (!localStorage.getItem("fortuneModalClosed")) {
                 var modal = new bootstrap.Modal(document.getElementById("fortuneModal"));
@@ -153,10 +177,18 @@
             }
         });
 
-        // 關閉視窗時設定 LocalStorage
-        document.querySelector(".btn-close").addEventListener("click", function () {
+        // 關閉第一次視窗時設定 LocalStorage
+        function closeFortuneModal() {
             localStorage.setItem("fortuneModalClosed", true);
-        });
+            var modal = bootstrap.Modal.getInstance(document.getElementById("fortuneModal"));
+            modal.hide();
+        }
+
+        // 關閉第二次視窗
+        function closeResultModal() {
+            var modal = bootstrap.Modal.getInstance(document.getElementById("resultModal"));
+            modal.hide();
+        }
 
         // 提交運勢資料
         document.getElementById("submitFortune").addEventListener("click", function () {
@@ -164,34 +196,62 @@
             const birthDate = document.getElementById("birthDate").value;
 
             if (!zodiacSign || !birthDate) {
-                alert("請完整填寫資料！");
+                Swal.fire({
+                    icon: "error",
+                    title: "資料不完整",
+                    text: "請完整填寫星座與生日資料！",
+                });
                 return;
             }
 
-            // 根據星座推薦商品的 productId
-            const productLinks = {
-                Aries: 1,
-                Taurus: 2,
-                Gemini: 3,
-                Cancer: 4,
-                Leo: 5,
-                Virgo: 6,
-                Libra: 7,
-                Scorpio: 8,
-                Sagittarius: 9,
-                Capricorn: 10,
-                Aquarius: 11,
-                Pisces: 12
-            };
+            // 發送 AJAX 請求到後端
+            $.ajax({
+                url: '/Customer/Home/GetFortune',
+                type: 'POST',
+                data: { zodiacSign: zodiacSign, birthDate: birthDate },
+                success: function (response) {
+                    // 關閉第一個視窗
+                    closeFortuneModal();
 
-            const productId = productLinks[zodiacSign];
-            const productUrl = `/Customer/Home/Details?productId=${productId}`;
+                    // 顯示結果到第二個視窗
+                    document.getElementById("luckyColorYear").innerText = response.LuckyColorYear;
+                    document.getElementById("luckyColorMonth").innerText = response.LuckyColorMonth;
+                    document.getElementById("horoscope").innerText = response.Horoscope;
 
-            // 跳轉到商品詳情頁面
-            window.location.href = productUrl;
+                    // 清空推薦商品區域
+                    var productContainer = document.getElementById("recommendedProducts");
+                    productContainer.innerHTML = "";
+
+                    // 動態生成商品卡片
+                    response.Products.forEach(function (product) {
+                        var productCard = `
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        <img src="${product.ImageUrl}" class="card-img-top" alt="${product.Title}">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${product.Title}</h5>
+                                            <a href="/Customer/Home/Details?productId=${product.Id}" class="btn btn-primary">查看商品</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        productContainer.insertAdjacentHTML('beforeend', productCard);
+                    });
+
+                    // 顯示第二個視窗
+                    var resultModal = new bootstrap.Modal(document.getElementById("resultModal"));
+                    resultModal.show();
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: "error",
+                        title: "發生錯誤",
+                        text: "無法取得運勢資訊，請稍後再試。",
+                    });
+                }
+            });
         });
     </script>
-
 
 </body>
 </html>

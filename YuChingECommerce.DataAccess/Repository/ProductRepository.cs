@@ -26,7 +26,7 @@ namespace YuChingECommerce.DataAccess.Repository
             if (objFromDb != null)
             {
                 objFromDb.Title = obj.Title;
-                objFromDb.ISBN = obj.ISBN;
+                objFromDb.SKU = obj.SKU;
                 objFromDb.Price = obj.Price;
                 objFromDb.Price50 = obj.Price50;
                 objFromDb.ListPrice = obj.ListPrice;

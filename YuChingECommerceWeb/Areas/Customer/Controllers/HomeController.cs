@@ -70,6 +70,56 @@ namespace YuChingECommerceWeb.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public IActionResult GetFortune(string zodiacSign, string birthDate)
+        {
+            if (DateTime.TryParse(birthDate, out DateTime parsedDate))
+            {
+                string luckyColorYear = ZodiacHelper.GetLuckyColor(zodiacSign, DateTime.Now);
+                string luckyColorMonth = ZodiacHelper.GetLuckyColor(zodiacSign, DateTime.Now); // 可根據月份進一步細分
+                string horoscope = ZodiacHelper.GetDailyHoroscope(zodiacSign);
+
+                // 獲取對應幸運色的商品
+                var products = _unitOfWork.Product.GetAll(p => p.Color == luckyColorYear || p.Color == luckyColorMonth).ToList();
+
+                // 構建返回的資料
+                var result = new
+                {
+                    LuckyColorYear = luckyColorYear,
+                    LuckyColorMonth = luckyColorMonth,
+                    Horoscope = horoscope,
+                    Products = products.Select(p => new
+                    {
+                        p.Id,
+                        p.Title,
+                        ImageUrl = p.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/images/default_product.png"
+                    })
+                };
+
+                return Json(result);
+            }
+
+            return BadRequest("Invalid date format.");
+        }
+
+        public IActionResult LuckyBracelets(string birthDate)
+        {
+            if (DateTime.TryParse(birthDate, out DateTime parsedDate))
+            {
+                string zodiacSign = LuckyColorHelper.GetZodiacSign(parsedDate);
+                string luckyColor = LuckyColorHelper.GetLuckyColor(zodiacSign, DateTime.Now);
+
+                var products = _unitOfWork.Product.GetAll(p => p.Color == luckyColor);
+
+                ViewData["ZodiacSign"] = zodiacSign;
+                ViewData["LuckyColor"] = luckyColor;
+
+                return View(products);
+            }
+
+            return BadRequest("Invalid date format.");
+        }
+
         public IActionResult Privacy()
         {
             return View();

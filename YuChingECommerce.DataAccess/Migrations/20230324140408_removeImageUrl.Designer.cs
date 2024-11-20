@@ -254,7 +254,7 @@ namespace YuChingECommerce.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ISBN")
+                    b.Property<string>("SKU")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -287,7 +287,7 @@ namespace YuChingECommerce.DataAccess.Migrations
                             Author = "Billy Spark",
                             CategoryId = 1,
                             Description = "Introducing our exquisite handcrafted bracelet collection, designed to embody elegance and individuality. Each bracelet is carefully crafted using premium materials, including natural gemstones. ",
-                            ISBN = "SWD9999001",
+                            SKU = "SWD9999001",
                             ListPrice = 99.0,
                             Price = 90.0,
                             Price100 = 80.0,
@@ -300,7 +300,7 @@ namespace YuChingECommerce.DataAccess.Migrations
                             Author = "Nancy Hoover",
                             CategoryId = 1,
                             Description = "Introducing our exquisite handcrafted bracelet collection, designed to embody elegance and individuality. Each bracelet is carefully crafted using premium materials, including natural gemstones. ",
-                            ISBN = "CAW777777701",
+                            SKU = "CAW777777701",
                             ListPrice = 40.0,
                             Price = 30.0,
                             Price100 = 20.0,
@@ -313,7 +313,7 @@ namespace YuChingECommerce.DataAccess.Migrations
                             Author = "Julian Button",
                             CategoryId = 1,
                             Description = "Introducing our exquisite handcrafted bracelet collection, designed to embody elegance and individuality. Each bracelet is carefully crafted using premium materials, including natural gemstones. ",
-                            ISBN = "RITO5555501",
+                            SKU = "RITO5555501",
                             ListPrice = 55.0,
                             Price = 50.0,
                             Price100 = 35.0,
@@ -326,7 +326,7 @@ namespace YuChingECommerce.DataAccess.Migrations
                             Author = "Abby Muscles",
                             CategoryId = 2,
                             Description = "Introducing our exquisite handcrafted bracelet collection, designed to embody elegance and individuality. Each bracelet is carefully crafted using premium materials, including natural gemstones. ",
-                            ISBN = "WS3333333301",
+                            SKU = "WS3333333301",
                             ListPrice = 70.0,
                             Price = 65.0,
                             Price100 = 55.0,
@@ -339,7 +339,7 @@ namespace YuChingECommerce.DataAccess.Migrations
                             Author = "Ron Parker",
                             CategoryId = 2,
                             Description = "Introducing our exquisite handcrafted bracelet collection, designed to embody elegance and individuality. Each bracelet is carefully crafted using premium materials, including natural gemstones. ",
-                            ISBN = "SOTJ1111111101",
+                            SKU = "SOTJ1111111101",
                             ListPrice = 30.0,
                             Price = 27.0,
                             Price100 = 20.0,
@@ -352,7 +352,7 @@ namespace YuChingECommerce.DataAccess.Migrations
                             Author = "Laura Phantom",
                             CategoryId = 3,
                             Description = "Introducing our exquisite handcrafted bracelet collection, designed to embody elegance and individuality. Each bracelet is carefully crafted using premium materials, including natural gemstones. ",
-                            ISBN = "FOT000000001",
+                            SKU = "FOT000000001",
                             ListPrice = 25.0,
                             Price = 23.0,
                             Price100 = 20.0,

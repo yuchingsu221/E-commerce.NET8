@@ -88,7 +88,7 @@ namespace YuChingECommerce.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SKU = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ListPrice = table.Column<double>(type: "float", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
@@ -344,7 +344,7 @@ namespace YuChingECommerce.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "Author", "CategoryId", "Description", "ISBN", "ImageUrl", "ListPrice", "Price", "Price100", "Price50", "TestProperty", "Title" },
+                columns: new[] { "Id", "Author", "CategoryId", "Description", "SKU", "ImageUrl", "ListPrice", "Price", "Price100", "Price50", "TestProperty", "Title" },
                 values: new object[,]
                 {
                     { 1, "Billy Spark", 1, "Introducing our exquisite handcrafted bracelet collection, designed to embody elegance and individuality. Each bracelet is carefully crafted using premium materials, including natural gemstones. ", "SWD9999001", "", 99.0, 90.0, 80.0, 85.0, 0, "Fortune of Time" },
