@@ -106,7 +106,6 @@
     <script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" asp-append-version="true"></script>
 
     <script src="https://cdn.tiny.cloud/1/g28lhnxtlihu4l4a381gw7tz47voznshwbi10lmsvlekrfme/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
@@ -121,7 +120,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeFortuneModal()"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="fortuneForm">
+                    <div id="fortuneForm" onsubmit="return false;">
                         <div class="mb-3">
                             <label for="zodiacSign" class="form-label">請選擇您的星座</label>
                             <select id="zodiacSign" class="form-select" required>
@@ -202,6 +201,8 @@
             window.closeFortuneModal = closeFortuneModal;
             window.closeResultModal = closeResultModal;
 
+            console.log("Script is running");
+
             // 提交運勢資料
             document.getElementById("submitFortune").addEventListener("click", function (e) {
                 e.preventDefault();
@@ -244,27 +245,30 @@
                         var modal = bootstrap.Modal.getInstance(document.getElementById("fortuneModal"));
                         modal.hide();
 
+                        // Move focus to the body to avoid aria-hidden warnings
+                        document.body.focus();
+
                         // Populate the result modal with response data
-                        document.getElementById("luckyColorYear").innerText = response.LuckyColorYear;
-                        document.getElementById("luckyColorMonth").innerText = response.LuckyColorMonth;
-                        document.getElementById("horoscope").innerText = response.Horoscope;
+                        document.getElementById("luckyColorYear").innerText = response.luckyColorYear;
+                        document.getElementById("luckyColorMonth").innerText = response.luckyColorMonth;
+                        document.getElementById("horoscope").innerText = response.horoscope;
 
                         // Generate product cards dynamically
                         const productContainer = document.getElementById("recommendedProducts");
                         productContainer.innerHTML = "";
 
-                        response.Products.forEach(product => {
+                        response.products.forEach(product => {
                             const productCard = `
-                                    <div class="col-md-4 mb-3">
-                                        <div class="card">
-                                            <img src="${product.ImageUrl}" class="card-img-top" alt="${product.Title}">
-                                            <div class="card-body">
-                                                <h5 class="card-title">${product.Title}</h5>
-                                                <a href="/Customer/Home/Details?productId=${product.Id}" class="btn btn-primary">查看商品</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `;
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <img src="${product.ImageUrl}" class="card-img-top" alt="${product.Title}">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.Title}</h5>
+                                <a href="/Customer/Home/Details?productId=${product.Id}" class="btn btn-primary">查看商品</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
                             productContainer.insertAdjacentHTML('beforeend', productCard);
                         });
 

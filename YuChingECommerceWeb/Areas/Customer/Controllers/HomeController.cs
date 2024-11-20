@@ -100,6 +100,7 @@ namespace YuChingECommerceWeb.Areas.Customer.Controllers
                             ImageUrl = p.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/images/default_product.png"
                         }).ToList()
                     };
+                    Console.WriteLine("幸運色Result: " + JsonConvert.SerializeObject(result));
 
                     return Json(result);
                 }
