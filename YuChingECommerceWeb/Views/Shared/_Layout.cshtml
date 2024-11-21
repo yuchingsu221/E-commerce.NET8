@@ -245,6 +245,12 @@
                         var modal = bootstrap.Modal.getInstance(document.getElementById("fortuneModal"));
                         modal.hide();
 
+                        // Set fortuneModalClosed in localStorage to prevent the modal from showing again
+                        localStorage.setItem("fortuneModalClosed", true);
+
+                        // Move focus to the body to avoid aria-hidden warnings
+                        document.body.focus();
+
                         // Populate the result modal with response data
                         document.getElementById("luckyColorYear").innerText = response.luckyColorYear;
                         document.getElementById("luckyColorMonth").innerText = response.luckyColorMonth;
