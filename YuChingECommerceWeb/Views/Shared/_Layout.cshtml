@@ -74,7 +74,7 @@
 
                         <!-- New Test Fortune Modal button -->
                         <li class="nav-item">
-                            <a class="nav-link" href="#" id="testFortuneModal">Test Fortune Modal</a>
+                            <a class="nav-link" href="#" id="testFortuneModal">Your Fortune</a>
                         </li>
 
                     </ul>
@@ -245,9 +245,6 @@
                         var modal = bootstrap.Modal.getInstance(document.getElementById("fortuneModal"));
                         modal.hide();
 
-                        // Move focus to the body to avoid aria-hidden warnings
-                        document.body.focus();
-
                         // Populate the result modal with response data
                         document.getElementById("luckyColorYear").innerText = response.luckyColorYear;
                         document.getElementById("luckyColorMonth").innerText = response.luckyColorMonth;
@@ -258,13 +255,14 @@
                         productContainer.innerHTML = "";
 
                         response.products.forEach(product => {
+                            const imageUrl = product.imageUrl || "/images/default_product.png";
                             const productCard = `
                     <div class="col-md-4 mb-3">
                         <div class="card">
-                            <img src="${product.ImageUrl}" class="card-img-top" alt="${product.Title}">
+                            <img src="${imageUrl}" class="card-img-top" alt="${product.title}">
                             <div class="card-body">
-                                <h5 class="card-title">${product.Title}</h5>
-                                <a href="/Customer/Home/Details?productId=${product.Id}" class="btn btn-primary">查看商品</a>
+                                <h5 class="card-title">${product.title}</h5>
+                                <a href="/Customer/Home/Details?productId=${product.id}" class="btn btn-primary">查看商品</a>
                             </div>
                         </div>
                     </div>

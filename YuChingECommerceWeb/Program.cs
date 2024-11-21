@@ -9,6 +9,7 @@ using Stripe;
 using YuChingECommerce.DataAccess.DbInitializer;
 using NLog.Web;
 using NLog;
+using System.Text.Json;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
@@ -22,7 +23,11 @@ builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
 builder.Host.UseNLog();
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+});
+
 builder.Services.AddDbContext<ApplicationDbContext>(options=> 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 

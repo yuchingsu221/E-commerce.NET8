@@ -48,7 +48,7 @@ namespace YuChingECommerce.Models
         public Category Category { get; set; }
 
         [ValidateNever]
-        public List<ProductImage> ProductImages { get; set; }
+        public ICollection<ProductImage> ProductImages { get; set; }
         public string Color { get; set; }
     }
 }

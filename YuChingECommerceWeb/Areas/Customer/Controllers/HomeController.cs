@@ -84,8 +84,11 @@ namespace YuChingECommerceWeb.Areas.Customer.Controllers
                     string luckyColorMonth = ZodiacHelper.GetLuckyColor(zodiacSign, DateTime.Now); // You can further refine this
                     string horoscope = ZodiacHelper.GetDailyHoroscope(zodiacSign);
 
-                    // Retrieve products matching the lucky colors
-                    var products = _unitOfWork.Product.GetAll(p => p.Color == luckyColorYear || p.Color == luckyColorMonth).ToList();
+                    // Retrieve products matching the lucky colors, including ProductImages
+                    var products = _unitOfWork.Product.GetAll(
+                        p => p.Color == luckyColorYear || p.Color == luckyColorMonth,
+                        includeProperties: "ProductImages"
+                    ).ToList();
 
                     // Build the response data
                     var result = new
@@ -119,6 +122,7 @@ namespace YuChingECommerceWeb.Areas.Customer.Controllers
                 return Json(new { error = "An error occurred on the server." });
             }
         }
+
 
 
         public IActionResult LuckyBracelets(string birthDate)
