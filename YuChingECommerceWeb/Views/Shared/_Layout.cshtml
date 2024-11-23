@@ -116,7 +116,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">輸入您的星座和生日</h5>
+                    <h5 class="modal-title text-dark">輸入您的星座和生日</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeFortuneModal()"></button>
                 </div>
                 <div class="modal-body">
@@ -143,7 +143,7 @@
                             <label for="birthDate" class="form-label">請輸入您的生日</label>
                             <input type="date" id="birthDate" class="form-control" required>
                         </div>
-                        <button type="button" id="submitFortune" class="btn btn-primary w-100">查看運勢</button>
+                        <button type="button" id="submitFortune" class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">查看運勢</button>
                     </div>
                 </div>
             </div>
@@ -160,7 +160,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeResultModal()"></button>
                 </div>
                 <div class="modal-body">
-                    <h5>今年的幸運色：<span id="luckyColorYear"></span></h5>
+                    @* <h5>今年的幸運色：<span id="luckyColorYear"></span></h5> *@
                     <h5>這個月的幸運色：<span id="luckyColorMonth"></span></h5>
                     <p>今日運勢：<span id="horoscope"></span></p>
                     <hr>
@@ -252,7 +252,7 @@
                         document.body.focus();
 
                         // Populate the result modal with response data
-                        document.getElementById("luckyColorYear").innerText = response.luckyColorYear;
+                        // document.getElementById("luckyColorYear").innerText = response.luckyColorYear;
                         document.getElementById("luckyColorMonth").innerText = response.luckyColorMonth;
                         document.getElementById("horoscope").innerText = response.horoscope;
 

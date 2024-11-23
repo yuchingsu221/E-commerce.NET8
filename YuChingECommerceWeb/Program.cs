@@ -22,13 +22,15 @@ builder.Logging.ClearProviders();
 builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
 builder.Host.UseNLog();
 
-// Add services to the container.
-builder.Services.AddControllersWithViews().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-});
+    // Add services to the container.
+    builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
 
-builder.Services.AddDbContext<ApplicationDbContext>(options=> 
+    builder.Services.AddHttpClient();
+    builder.Services.AddSingleton<ChineseConverterService>();
+    builder.Services.AddDbContext<ApplicationDbContext>(options=> 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
