@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using System.Text;
+using YuChingECommerceWeb.Areas.Customer.Services.Interfaces;
 
 namespace YuChingECommerceWeb.Areas.Customer.Controllers
 {
@@ -18,33 +19,33 @@ namespace YuChingECommerceWeb.Areas.Customer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IHttpClientFactory _httpClientFactory; // 使用 IHttpClientFactory 進行依賴注入
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly ChineseConverterService _chineseConverter;
+        private readonly IHomeService _homeService;
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, ChineseConverterService chineseConverterService)
+        public HomeController(
+              ILogger<HomeController> logger
+            , IUnitOfWork unitOfWork
+            , IHttpClientFactory httpClientFactory
+            , ChineseConverterService chineseConverterService
+            , IHomeService homeService
+            )
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
             _httpClientFactory = httpClientFactory;
             _chineseConverter = chineseConverterService;
+            _homeService = homeService;
         }
 
-        public IActionResult Index()
-        {
-
-            IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category,ProductImages");
-            return View(productList);
+        public async Task<IActionResult> Index()
+        {            
+            return View(await _homeService.Index());
         }
 
-        public IActionResult Details(int productId)
-        {
-            ShoppingCart cart = new()
-            {
-                Product = _unitOfWork.Product.Get(u => u.Id == productId, includeProperties: "Category,ProductImages"),
-                Count = 1,
-                ProductId = productId
-            };
-            return View(cart);
+        public async Task<IActionResult> Details(int productId)
+        {            
+            return View(await _homeService.Details(productId));
         }
 
         [HttpPost]

@@ -10,6 +10,8 @@ using YuChingECommerce.DataAccess.DbInitializer;
 using NLog.Web;
 using NLog;
 using System.Text.Json;
+using YuChingECommerceWeb.Areas.Customer.Services.Interfaces;
+using YuChingECommerceWeb.Areas.Customer.Services;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
@@ -29,7 +31,10 @@ builder.Host.UseNLog();
     });
 
     builder.Services.AddHttpClient();
+
+    //µù¥UªA°È
     builder.Services.AddSingleton<ChineseConverterService>();
+    builder.Services.AddScoped<IHomeService, HomeService>();
     builder.Services.AddDbContext<ApplicationDbContext>(options=> 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
