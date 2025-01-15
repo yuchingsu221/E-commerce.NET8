@@ -1,15 +1,12 @@
 ﻿using YuChingECommerce.DataAccess.Repository.IRepository;
 using YuChingECommerce.DataAcess.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace YuChingECommerce.DataAccess.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
+        private bool _disposed;
         private ApplicationDbContext _db;
         public ICategoryRepository Category { get; private set; }
         public ICompanyRepository Company { get; private set; }
@@ -40,6 +37,35 @@ namespace YuChingECommerce.DataAccess.Repository
         public async Task SaveAsync()
         {
             await _db.SaveChangesAsync();;
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _db.SaveChangesAsync();
+        }
+
+        public void SaveChanges()
+        {
+            _db.SaveChanges();
+        }
+
+        public IDbContextTransaction BeginTransaction()
+        {
+            return _db.Database.BeginTransaction();
+        }
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await _db.Database.BeginTransactionAsync();
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed && _db != null)
+            {
+                _disposed = true;
+                _db.Dispose();
+            }
         }
     }
 }
